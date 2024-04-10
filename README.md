@@ -1,2 +1,2 @@
 # coisas_aws
-repo p/ conteúdos, links, códigos && +
+repo para hackinagens, conteudos, links, codes && +
