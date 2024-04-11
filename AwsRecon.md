@@ -1,8 +1,9 @@
 ## External and Internal Recon
 
-#### S3 enum
+> ### S3 enum
 
-- External/Public
+#### External/Public/Unauthenticated
+
 1 - https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-unauthenticated-enum-access/aws-s3-unauthenticated-enum
 
 2 - Discovering Bucket Names:
@@ -25,7 +26,17 @@ There are many ways to discover the names of Buckets. One of the easiest ways is
   - ```$ curl http://irs-form-990.s3.amazonaws.com/201101319349101615_public.xml```
   - ```$ aws s3 cp s3://irs-form-990/201101319349101615_public.xml . --no-sign-request```
 
-7 - S3 misconfig serie:
+ 
+#### Internal/Authenticated
+
+- https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-services/aws-s3-athena-and-glacier-enum#enumeration
+
+1 - Listing the Contents of Buckets:
+- ```aws s3 --profile YOUR_ACCOUNT ls s3://BUCKET-NAME```
+
+2 - 
+
+#### S3 misconfig series:
 
 1. http://flaws.cloud/
 2. http://flaws.cloud/hint1.html
@@ -41,9 +52,12 @@ There are many ways to discover the names of Buckets. One of the easiest ways is
 12. http://level5-d2891f604d2061b6977c2481b0c8333e.flaws.cloud/243f422c/hint2.html
 13. http://level5-d2891f604d2061b6977c2481b0c8333e.flaws.cloud/243f422c/hint3.html
 14. http://level6-cc4c404a8a8b876167f5e70a7d8c9880.flaws.cloud/ddcc78ff/
-15. 
+15. http://level6-cc4c404a8a8b876167f5e70a7d8c9880.flaws.cloud/ddcc78ff/hint1.html
+16. http://level6-cc4c404a8a8b876167f5e70a7d8c9880.flaws.cloud/ddcc78ff/hint2.html 
+17. http://theend-797237e8ada164bf9f12cebf93b282cf.flaws.cloud/d730aa2b/
 
-#### IAM
+
+> ### IAM
 
 1 - https://hackingthe.cloud/aws/general-knowledge/using_stolen_iam_credentials/
   - https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-basic-information#cli-authentication
@@ -72,4 +86,32 @@ This command will add entries to the .aws/config and .aws/credentials files in y
   - Listing all the EC2 instances running in an account in a different region
   - ```aws ec2 describe-instances --output text --region us-east-1 --profile PROFILENAME```
 
+3 - Enum Policies
 
+- https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-services/aws-iam-enum
+
+- Get metadata of user
+- ```aws --profile PROFILE-NAME iam get-user```
+
+- Get policies of user
+- ```aws --profile PROFILE-NAME iam list-attached-user-policies --user-name CURRENT-OR-OTHER```
+
+- Get policy content
+- ```aws --profile PROFILE-NAME iam get-policy --policy-arn <policy_arn>```
+- ```aws iam get-policy-version --policy-arn <arn:aws:iam::975426262029:policy/list_apigateways> --version-id <VERSION_X>```
+
+
+> ### EC2
+
+#### Internal/Authenticated
+
+- https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-services/aws-ec2-ebs-elb-ssm-vpc-and-vpn-enum
+
+- Discovery snapshots
+- ```aws --profile PROFILE-NAME ec2 describe-snapshots --owner-id ACCOUNT-ID```
+
+- Snapshot Dump
+- https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-post-exploitation/aws-ec2-ebs-ssm-and-vpc-post-exploitation/aws-ebs-snapshot-dump
+- http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint1.html
+- http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint2.html
+- http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint3.html
