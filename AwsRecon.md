@@ -1,6 +1,6 @@
 ## External and Internal Recon
 
-> ### S3 enum
+> ## S3 enum
 
 #### External/Public/Unauthenticated
 
@@ -55,9 +55,10 @@ There are many ways to discover the names of Buckets. One of the easiest ways is
 15. http://level6-cc4c404a8a8b876167f5e70a7d8c9880.flaws.cloud/ddcc78ff/hint1.html
 16. http://level6-cc4c404a8a8b876167f5e70a7d8c9880.flaws.cloud/ddcc78ff/hint2.html 
 17. http://theend-797237e8ada164bf9f12cebf93b282cf.flaws.cloud/d730aa2b/
+18. http://level2-g9785tw8478k4awxtbox9kk3c5ka8iiz.flaws2.cloud/ (lambda leak envs with creds)
 
 
-> ### IAM
+> ## IAM
 
 1 - https://hackingthe.cloud/aws/general-knowledge/using_stolen_iam_credentials/
   - https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-basic-information#cli-authentication
@@ -101,7 +102,7 @@ This command will add entries to the .aws/config and .aws/credentials files in y
 - ```aws iam get-policy-version --policy-arn <arn:aws:iam::975426262029:policy/list_apigateways> --version-id <VERSION_X>```
 
 
-> ### EC2
+> ## EC2
 
 #### Internal/Authenticated
 
@@ -115,3 +116,32 @@ This command will add entries to the .aws/config and .aws/credentials files in y
 - http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint1.html
 - http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint2.html
 - http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint3.html
+
+
+
+> ## ECR (Elastic Container Registry)
+
+#### Internal/Authenticated
+
+- Get repos
+- ```aws ecr describe-repositories --profile PROFILE-NAME```
+- ```aws ecr describe-registry --profile PROFILE-NAME```
+
+
+- Get image metadata
+- ```aws ecr list-images --repository-name <repo_name> --profile PROFILE-NAME```
+
+- ```aws ecr list-images --repository-name <repo_name> --resgistry-id ACCOUNT-ID --profile PROFILE-NAME```
+
+- ```aws ecr batch-get-image --repository-name level2 --registry-id 653711331788 --image-ids imageTag=latest | jq '.images[].imageManifest | fromjson'```
+
+- ```aws ecr get-download-url-for-layer --repository-name level2 --registry-id 653711331788 --layer-digest "sha256:..."```
+
+- Login, Pull & Push
+- login - ```aws ecr --profile PROFILE-NAME get-login-password --region REGION | docker login --username AWS --password-stdin ACCOUNT-ID.dkr.ecr.REGION.amazonaws.com```
+- pull image - ```docker pull <account_id>.dkr.ecr.<region>.amazonaws.com/<img_name>:latest```
+
+
+- Get image metadata
+- ```aws ecr describe-images --repository-name level2 --profile PROFILE-ID```
+- 
